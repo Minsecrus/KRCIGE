@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KRCIGE：一个有界工程框架</title>
+<meta name="description" content="KRCIGE：从认识有限、资源有限、控制有限与工程不可逆性出发，推导并解释软件工程经验原则的探索性框架。初稿 v0.1。">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --fg: #1c1917;
+    --muted: #78716c;
+    --accent: #4f46e5;
+    --accent-soft: #eef2ff;
+    --border: #e7e5e4;
+    --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #18181b;
+      --fg: #e7e5e4;
+      --muted: #a1a1aa;
+      --accent: #a5b4fc;
+      --accent-soft: #27272a;
+      --border: #27272a;
+      --card: #1f1f23;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 3rem;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 0.2rem 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    line-height: 1.3;
+    margin: 0 0 0.4rem;
+    font-weight: 700;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1.8rem;
+  }
+  .abstract {
+    font-size: 1.05rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.1rem;
+    margin: 0 0 2.2rem;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2.6rem; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    .btn-primary { color: #18181b; }
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin: 0 0 1rem;
+    font-weight: 700;
+  }
+  .elements {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.7rem;
+    margin-bottom: 2.6rem;
+  }
+  .el {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+  }
+  .el b {
+    color: var(--accent);
+    font-size: 1.15rem;
+    margin-right: 0.5rem;
+  }
+  .el small { display: block; color: var(--muted); font-size: 0.85rem; }
+  ul.contents {
+    margin: 0 0 2.6rem;
+    padding-left: 1.3rem;
+    color: var(--fg);
+  }
+  ul.contents li { margin: 0.35rem 0; }
+  ul.contents li::marker { color: var(--accent); }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.4rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+  }
+  a { color: var(--accent); }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">初稿 v0.1</span>
+  <h1>KRCIGE：一个有界工程框架</h1>
+  <p class="subtitle">从工程的有界性出发，推导软件工程的经验原则</p>
+
+  <p class="abstract">
+    从认识有限（K）、资源有限（R）、控制有限（C）与工程不可逆性（I）四个描述性要素，加上工程目标（G）、伦理边界（E）与可学习结构条件 Σ，推导并解释 DRY、低耦合、小步迭代、版本控制、自动化测试等软件工程经验原则的探索性框架。
+  </p>
+
+  <div class="actions">
+    <a class="btn btn-primary" href="krcige_bounded_engineering_draft_v0_1.pdf">📄 阅读 PDF 初稿（v0.1）</a>
+    <a class="btn btn-secondary" href="https://github.com/Minsecrus/KRCIGE/blob/main/krcige_bounded_engineering_draft_v0_1.tex">LaTeX 源文件</a>
+  </div>
+
+  <h2>四个描述性要素与三个规范性构件</h2>
+  <div class="elements">
+    <div class="el"><b>K</b>认识有限<small>Epistemic bounds</small></div>
+    <div class="el"><b>R</b>资源有限<small>Resource bounds</small></div>
+    <div class="el"><b>C</b>控制有限<small>Control bounds</small></div>
+    <div class="el"><b>I</b>工程不可逆性<small>Irreversibility</small></div>
+    <div class="el"><b>G</b>工程目标<small>Goals</small></div>
+    <div class="el"><b>E</b>伦理边界<small>Ethics</small></div>
+    <div class="el"><b>Σ</b>可学习结构条件<small>Learnable structure</small></div>
+  </div>
+
+  <h2>初稿内容包括</h2>
+  <ul class="contents">
+    <li>四加二要素与 Σ 条件的定义</li>
+    <li>十三条中间原则及其派生关系</li>
+    <li>可复算的发布案例</li>
+    <li>以《The Pragmatic Programmer》100 条 Tips 检查压缩能力</li>
+    <li>用 Twelve-Factor App 做内部前瞻性留出核验</li>
+  </ul>
+
+  <footer>
+    <span>许可：<a href="https://github.com/Minsecrus/KRCIGE/blob/main/LICENSE">CC BY-NC-SA 4.0</a></span>
+    <span><a href="https://github.com/Minsecrus/KRCIGE">GitHub 仓库</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
