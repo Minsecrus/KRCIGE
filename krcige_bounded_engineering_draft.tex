@@ -68,20 +68,20 @@
 
 \section{引言}
 
-软件工程领域沉淀了浩繁的经验原则。尽管它们源自不同的年代、编程语言、组织形态与技术栈，却往往指向高度一致的工程直觉：消除无关耦合、缩小单次变更的影响范围、保留演化历史、自动化繁琐重复的操作、尽可能快速获取反馈、将隐式假设显式化、严格约束共享状态，以及使系统架构保持易于修改的弹性。
+自 1968 年 NATO 软件工程会议召开以应对“软件危机”以来，学术界与工业界关于“软件工程”本质内涵的界定经历过数个代表性阶段。Bauer 早期代表 NATO 会议提出经典定义：“建立并使用健全的工程原则，以便经济地获得在实际机器上可靠且能高效运行的软件” \cite{nato1968}，奠定了资源约束与物理可靠性的工程基调；IEEE Std 610.12 国际标准将其规范化为“将系统化、规范化、可度量的方法应用于软件的开发、运行和维护” \cite{ieee1990}，突出流程受控与可度量性；Boehm 在《软件工程经济学》中将其表征为实用经济学、数学与计算科学的结合，聚焦受限资源条件下的工程效用权衡 \cite{boehm1981}；近年 Google 团队则进一步将其凝练为“在时间维度上积分的编程”（\textit{Programming integrated over time}），指出软件工程区别于单纯编程的核心在于跨越时间的系统演化、组织人员规模扩展以及多目标权衡决策 \cite{winters2020}。
 
-一个自然且根本的追问是：这些分散的经验法则，背后是否共享着更少、更本质的第一性原理？
+上述代表性定义分别从经济性、规范性、度量性与时间演化等视角提供了深刻的工程洞见。然而，现有论述大多停留在宏观的经济愿景、管理学流程规范或生动的工业隐喻层面，长期缺乏一个自底层物理与计算约束出发、能对各类工程经验策略进行形式化公理推导与因果预测的统一数学框架。与此同时，半个多世纪的工程实践中沉淀了浩繁看似分散的最佳实践与法则——从 DRY、低耦合、小步迭代，到版本控制、持续集成、契约断言与防御隔离。一个根本的理论问题在于：这些由不同时代、语言与组织形态提炼出的经验原则，背后是否由更少、更自洽的有界约束与决策机制所支配？
 
-本文提出 KRCIGE 框架，试图把软件工程原则组织为以下推导结构：
+本文提出 KRCIGE 框架，试图把软件工程原则组织为以下自顶向下的形式化推导结构：
 \begin{equation}
 \boxed{
-\text{现实约束}
+\text{现实客观约束}
 +
-\text{目标与价值边界}
+\text{效用目标与伦理红线}
 \rightsquigarrow
 \text{中间工程原则}
 \rightsquigarrow
-\text{具体实践}
+\text{最优工程实践}
 }
 \end{equation}
 
@@ -142,11 +142,11 @@ K、R、C、I 构成了剖析同一工程情境的四维诊断参量：$k_Q$ 具
 
 \begin{remark}[时间折现、视界截断与现实工程张力]
 \label{rem:time-integration-truncation}
-式 \eqref{eq:trajectory-value} 的轨迹价值采用离散时间折现累加形式，对应软件工程对跨期权衡的关注（即工业界常指出的“跨越时间尺度的系统演化”）。在应用该模型时，需注意以下三项现实张力：
+式 \eqref{eq:trajectory-value} 的长程轨迹价值采用离散时间折现累加形式，这在数学上严格对应了 Google 关于“软件工程是在时间维度上积分的编程”（\textit{Programming integrated over time} \cite{winters2020}）的工程主张。然而，现实中的有限时域折现求和并非平滑无摩擦的数学积分；在将该形式化模型映射至工业实践时，必须面对以下三项源于有界理性的结构性现实张力：
 \begin{enumerate}[label=(\arabic*)]
-    \item \textbf{视界截断效应（Truncation Dilemma）：}有限时间窗 $\tau=\{0,\ldots,H\}$ 意味着所有超出 $H$ 的未来损益均被压缩于终止项 $\zeta^H v_H$ 中。若评估主体人为选择较短的时间窗（例如仅对应单次迭代或短期交付节点），且在估计 $v_H$ 时忽略了遗留系统状态 $w_H$ 隐蔽的恢复成本，则最优解 $\pi^*$ 极易倾向于压低当期防护投入 $\kappa_t$，从而将高额的潜在不可逆损失 $I(w_H)$ 转嫁至后续时间窗。这是短视工程决策和隐性债务累积的典型机制。
-    \item \textbf{环境非平稳性（Non-stationarity）：}模型假定转移核 $T$ 和扰动集 $\mathcal D$ 在时间窗内已预先界定。但在超长生命周期系统中，外部依赖、运行平台和上下游协议会随时间自发漂移（即海勒姆定律所描述的隐式行为依赖固化），导致未被修改的代码其外部不可逆性 $I$ 与控制缺口 $\gamma_Q$ 随时间推移而内生上升。
-    \item \textbf{执行主体不连续性（Subject Discontinuity）：}当项目跨越较长周期后，执行主体 $s_t$ 常面临人员更替。若缺乏外部证据保留，历史信息 $h_t$ 无法被后继主体完整继承，导致认识缺口 $k_Q$ 在交接节点陡增。这直接决定了知识外部化（P12）与证据保留（P6）在长周期工程中的必要性。
+    \item \textbf{视界截断效应（Truncation Dilemma）：}有限时间窗 $\tau=\{0,\ldots,H\}$ 意味着所有超出 $H$ 的未来损益均被压缩于终止残值 $\zeta^H v_H$ 中。若评估主体人为选择较短的时间窗（例如仅对应单次迭代或短期交付节点），且在估算 $v_H$ 时忽略了遗留系统状态 $w_H$ 所隐含的高额恢复成本，则最优解 $\pi^*$ 极易诱发对当期防护投入 $\kappa_t$ 的过度削减，从而将高额的潜在不可逆损失 $I(w_H)$ 转嫁至后续周期。这一机制在数学上解释了技术债务与架构退化的非理性累积动因。
+    \item \textbf{环境非平稳性与行为依赖漂移（Non-stationarity）：}模型假定转移核 $T$ 和扰动集 $\mathcal D$ 在时间窗内已预先界定。但在超长生命周期系统中，底层环境、外部依赖与上下游协议会随时间自发漂移；正如海勒姆定律（Hyrum's Law \cite{winters2020}）所指出的，随着观察者数量与系统存活时间增加，所有可观测的系统实现细节最终都会被调用方隐式依赖。这种非平稳漂移会导致即便代码文本未被修改，其外部不可逆性 $I$ 与控制缺口 $\gamma_Q$ 也会随时间推移而内生上升。
+    \item \textbf{执行主体不连续性（Subject Discontinuity）：}当项目跨越较长周期后，执行主体 $s_t$ 常面临人员更替与团队重组（$s_t \neq s_{t+k}$）。若缺乏外部证据保留，历史决策信息 $h_t$ 无法被后继主体完整继承，导致认知缺口 $k_Q$ 在交接断点出现台阶式跃升。这直接决定了知识外部化（P12）、契约显式化（P5）与证据保留（P6）在长周期工程中的必要性。
 \end{enumerate}
 \end{remark}
 
@@ -191,7 +191,7 @@ Ashby 的必要多样性定律、鲁棒控制理论以及 FLP 不可能定理共
 
 \subsection{模块化、抽象与技术债务}
 
-Parnas 的信息隐藏模块划分准则与 SICP 的最少承诺原则分别对应原则 P4 与 P2 \cite{parnas1972,sicp1996}。Ward Cunningham 最初提出的技术债务隐喻强调“借贷以加快短期交付，未来持续偿还利息”\cite{cunningham1992}。技术债务在 KRCIGE 中可形式化为延后决策或结构妥协带来的系统内生变更成本：
+Parnas 的信息隐藏模块划分准则与 SICP 的最少承诺原则分别对应原则 P4 与 P2 \cite{parnas1972,sicp1996}。Boehm 在《软件工程经济学》中开创性地将全生命周期资源分析与定量成本估计模型引入软件开发 \cite{boehm1981}；Ward Cunningham 最初提出的技术债务隐喻则强调“借贷以加快短期交付，未来持续偿还利息”\cite{cunningham1992}。技术债务在 KRCIGE 中可形式化为延后决策或结构妥协带来的系统内生变更成本：
 \[
 C_{\mathrm{debt}}
 =
@@ -1499,6 +1499,27 @@ Ward Cunningham.
 \newblock ``The WyCash Portfolio Management System.''
 \newblock In \textit{Addendum to the Proceedings on Object-Oriented Programming Systems, Languages, and Applications (OOPSLA '92)}, pages 29--30, 1992.
 \newblock DOI: \url{https://doi.org/10.1145/157709.157715}
+
+\bibitem{nato1968}
+Peter Naur and Brian Randell, editors.
+\newblock \textit{Software Engineering: Report on a conference sponsored by the NATO Science Committee}.
+\newblock Scientific Affairs Division, NATO, Garmisch, Germany, 1969.
+
+\bibitem{ieee1990}
+IEEE Computer Society.
+\newblock \textit{IEEE Standard Glossary of Software Engineering Terminology (IEEE Std 610.12-1990)}.
+\newblock IEEE, 1990.
+\newblock DOI: \url{https://doi.org/10.1109/IEEESTD.1990.101064}
+
+\bibitem{boehm1981}
+Barry W. Boehm.
+\newblock \textit{Software Engineering Economics}.
+\newblock Prentice-Hall, 1981.
+
+\bibitem{winters2020}
+Titus Winters, Tom Manshreck, and Hyrum Wright.
+\newblock \textit{Software Engineering at Google: Lessons Learned from Programming Over Time}.
+\newblock O'Reilly Media, 2020.
 
 \end{thebibliography}
 
