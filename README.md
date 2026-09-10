@@ -15,8 +15,8 @@
 
 ## 文件
 
-- `krcige_bounded_engineering_draft_v0_1.tex` — LaTeX 源文件（ctexart，需 XeLaTeX 编译）
-- `krcige_bounded_engineering_draft_v0_1.pdf` — 编译好的 PDF
+- `krcige_bounded_engineering_draft.tex` — LaTeX 源文件（ctexart，需 XeLaTeX 编译）
+- `krcige_bounded_engineering_draft.pdf` — 编译好的 PDF
 - `examples/sequential_release.py` — 可复现的序贯发布数值示例
 
 论文源文件中的作者、单位和电子邮箱目前保留为待填字段；正式投稿前请替换为实际署名信息。
@@ -24,8 +24,8 @@
 ## 编译
 
 ```bash
-xelatex krcige_bounded_engineering_draft_v0_1.tex
-xelatex krcige_bounded_engineering_draft_v0_1.tex
+xelatex krcige_bounded_engineering_draft.tex
+xelatex krcige_bounded_engineering_draft.tex
 python examples/sequential_release.py
 ```
 
