@@ -14,3 +14,7 @@
 *.nav
 *.snm
 *.vrb
+
+# Python and PDF review intermediates
+__pycache__/
+/tmp/pdfs/
